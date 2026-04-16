@@ -1,3 +1,4 @@
 *
 !.gitignore
-!frmMultiLoan.php
+!frmAmortizedConfiguration.php
+!frmEarningsConfiguration.php
