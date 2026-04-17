@@ -69,7 +69,6 @@ switch ($MC) {
             $DBConnection->beginTransaction();
 
             if ($IsUpdate == "False") {
-                // 1. INSERT maintenance_earning
                 $sql = "INSERT INTO hrmax.maintenance_earning (inccode, description, nontaxable, formulated, formula, ceiling_amount, deductible, include_in_alphalisting, payroll_type, automatic_gross, incl_based_on, automatic_contra_acct, lr_type, ceiling_config, trail) 
                         VALUES (:inccode, :description, :nontaxable, :formulated, :formula, :ceiling_amount, :deductible, :include_in_alphalisting, :payroll_type, :automatic_gross, :incl_based_on, :automatic_contra_acct, :lr_type, :ceiling_config, :trail)";
                 $sth = $DBConnection->prepare($sql);
@@ -90,7 +89,6 @@ switch ($MC) {
                 $sth->bindParam(":trail", $trail);
                 $sth->execute();
 
-                // 2. UPDATE fixearnings
                 $sql = "UPDATE hrmax.fixearnings SET formula = :formula, nontaxable = :nontaxable, deductible = :deductible, payroll_type = :payroll_type, incl_based_on = :incl_based_on WHERE inccode = :inccode AND automatic_gross = :automatic_gross";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":formula", $formula);
@@ -102,7 +100,6 @@ switch ($MC) {
                 $sth->bindParam(":automatic_gross", $automatic_gross);
                 $sth->execute();
 
-                // 3. UPDATE otherearning
                 $sql = "UPDATE hrmax.otherearning SET formula = :formula, nontaxable = :nontaxable, deductible = :deductible, incl_based_on = :incl_based_on, automatic_contra_acct = :automatic_contra_acct WHERE inccode = :inccode AND automatic_gross = :automatic_gross";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":formula", $formula);
@@ -115,7 +112,6 @@ switch ($MC) {
                 $sth->execute();
 
             } else {
-                // 1. UPDATE maintenance_earning
                 $sql = "UPDATE hrmax.maintenance_earning SET inccode = :inccode, description = :description, nontaxable = :nontaxable, formulated = :formulated, formula = :formula, ceiling_amount = :ceiling_amount, deductible = :deductible, include_in_alphalisting = :include_in_alphalisting, payroll_type = :payroll_type, automatic_gross = :automatic_gross, incl_based_on = :incl_based_on, automatic_contra_acct = :automatic_contra_acct, lr_type = :lr_type, ceiling_config = :ceiling_config, trail = :trail WHERE inccode = :old_inccode";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":inccode", $inccode);
@@ -136,7 +132,6 @@ switch ($MC) {
                 $sth->bindParam(":old_inccode", $old_inccode);
                 $sth->execute();
 
-                // 2. UPDATE fixearnings
                 $sql = "UPDATE hrmax.fixearnings SET formula = :formula, nontaxable = :nontaxable, deductible = :deductible, payroll_type = :payroll_type, automatic_gross = :automatic_gross, incl_based_on = :incl_based_on WHERE inccode = :old_inccode";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":formula", $formula);
@@ -148,7 +143,6 @@ switch ($MC) {
                 $sth->bindParam(":old_inccode", $old_inccode);
                 $sth->execute();
 
-                // 3. UPDATE otherearning
                 $sql = "UPDATE hrmax.otherearning SET formula = :formula, nontaxable = :nontaxable, deductible = :deductible, automatic_gross = :automatic_gross, incl_based_on = :incl_based_on, automatic_contra_acct = :automatic_contra_acct WHERE inccode = :old_inccode";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":formula", $formula);
@@ -160,14 +154,12 @@ switch ($MC) {
                 $sth->bindParam(":old_inccode", $old_inccode);
                 $sth->execute();
 
-                // 4. UPDATE fixearnings_payroll
                 $sql = "UPDATE hrmax.fixearnings_payroll SET inccode = :inccode WHERE inccode = :old_inccode";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":inccode", $inccode);
                 $sth->bindParam(":old_inccode", $old_inccode);
                 $sth->execute();
 
-                // 5. UPDATE otherearning_payroll
                 $sql = "UPDATE hrmax.otherearning_payroll SET inccode = :inccode WHERE inccode = :old_inccode";
                 $sth = $DBConnection->prepare($sql);
                 $sth->bindParam(":inccode", $inccode);
