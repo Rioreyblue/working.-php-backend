@@ -26,7 +26,7 @@ $trailDate = date("Y/m/d h:i:sa");
 
 switch ($MC) {
 
-    case "MLOAN01":
+    case "AMORT01":
         try {
             $sql = "SELECT loan_id, loan_desc, banking, glaccount_no, lr_type FROM hrmax.maintenance_multiloan ORDER BY loan_id ASC;";
             $sth = $DBConnection->prepare($sql);
@@ -39,7 +39,7 @@ switch ($MC) {
         }
         break;
 
-    case "MLOAN02": // insrt or update
+    case "AMORT02": // insrt or update
         try {
             $loan_id      = $objEntry->{'loan_id'};
             $loan_desc    = $objEntry->{'loan_desc'};
@@ -83,7 +83,7 @@ switch ($MC) {
         }
         break;
 
-    case "MLOAN03":
+    case "AMORT03":
         try {
             $var_del = $objEntry->{'var_del'};
             $booleany = $objEntry->{'boolean'};
