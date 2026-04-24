@@ -2,3 +2,4 @@
 !.gitignore
 !frmAmortizedConfiguration.php
 !frmEarningsConfiguration.php
+!frmDeductionConfiguration.php
