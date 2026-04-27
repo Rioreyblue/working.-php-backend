@@ -122,7 +122,6 @@ switch ($MC) {
 case "DASH06":
         try {
             $varDateNow = $objEntry->{'varDateNow'};
-
             $sql = "SELECT 
                 (SELECT COUNT(*) FROM hrmax.daily_attendance 
                  WHERE (remarks IS NULL OR remarks = 'null' OR remarks != 'ABSENT') 
@@ -138,13 +137,10 @@ case "DASH06":
                  WHERE ? BETWEEN date_from AND date_to AND deleted = FALSE) AS total_on_leave";
 
             $sth = $DBConnection->prepare($sql);
-            
-            // Binding the same date to all 4 subquery placeholders
             $sth->bindValue(1, $varDateNow);
             $sth->bindValue(2, $varDateNow);
             $sth->bindValue(3, $varDateNow);
-            $sth->bindValue(4, $varDateNow);
-            
+            $sth->bindValue(4, $varDateNow);  
             $sth->execute();
             $sth->setFetchMode(PDO::FETCH_ASSOC); 
             $rows = json_encode($sth->fetchAll());  
@@ -180,51 +176,6 @@ case "DASH06":
             echo $ex;
         }
     break;
-    // case "DASH07":
-    // try {
-    //     $varYear = $objEntry->{'varYear'};
-    //     $ActiveUserID = $objEntry->{'ActiveUserID'}; 
-    //     $ids = is_array($ActiveUserID) ? $ActiveUserID : [$ActiveUserID];
-        
-    //     $placeholders = implode(',', array_fill(0, count($ids), '?'));
-
-    //     $sql = "SELECT 
-    //                 stat.idno, 
-    //                 CONCAT(pr.lname, ', ', pr.fname, ' ', pr.mname) AS full_name,
-    //                 CASE 
-    //                     WHEN stat.remarks IS NULL OR stat.remarks = 'null' OR stat.remarks = '' THEN 'PRESENT'
-    //                     ELSE stat.remarks 
-    //                 END AS final_remarks,
-    //                 stat.attdate
-    //             FROM 
-    //                 hrmax.daily_attendance_posted AS stat
-    //             INNER JOIN 
-    //                 hrmax.profile AS pr ON stat.idno = pr.idno
-    //             WHERE 
-    //                 EXTRACT(YEAR FROM stat.attdate) = ? 
-    //                 AND stat.idno IN ($placeholders)";
-
-    //     $sth = $DBConnection->prepare($sql);
-
-        
-    //     $sth->bindValue(1, $varYear);
-
-    //     // 4. Bind all IDs starting from Position 2
-    //     foreach ($ids as $index => $id) {
-    //         $sth->bindValue($index + 2, $id);
-    //     }
-
-    //     $sth->execute();
-    //     $sth->setFetchMode(PDO::FETCH_ASSOC); 
-    //     $rows = json_encode($sth->fetchAll());  
-        
-    //     if ($rows != '[]') {
-    //         echo $rows; 
-    //     }
-    // } catch(Exception $ex) {
-    //     echo $ex->getMessage();
-    // }
-    // break;
     }  
 $DBConnection=null;
 
