@@ -159,12 +159,12 @@ case "DASH06":
                     stat.divcode,
                     CONCAT(pr.lname, ', ', pr.fname, ' ', pr.mname) AS full_name,
                     stat.remarks,
-                    stat.attdate, 
+                    TO_CHAR(stat.attdate, 'MM/DD/YYYY') AS formated_date
                     stat.trail
                     FROM hrmax.daily_attendance AS stat
                     INNER JOIN 
                     hrmax.profile AS pr ON stat.idno = pr.idno
-                    ORDER BY attdate DESC";
+                    ORDER BY formated_date DESC";
             $sth = $DBConnection->prepare($sql);
             $sth->execute();
             $sth->setFetchMode(PDO::FETCH_ASSOC); 
