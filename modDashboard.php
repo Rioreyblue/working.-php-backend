@@ -124,32 +124,18 @@ case "DASH06":
         $varDateNow = $objEntry->{'varDateNow'};
         
         $sql = "SELECT 
-            (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE date_log = ?) AS total_base,
 
             (SELECT COUNT(*) FROM hrmax.daily_attendance 
              WHERE remarks = 'ABSENT' AND date_log = ?) AS total_absent,
 
             (SELECT COUNT(*) FROM hrmax.daily_attendance 
              WHERE (remarks = '' OR remarks = 'LATE' OR remarks = 'UNDERTIME') AND date_log = ?) AS total_present,
-
-            (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE remarks = 'LATE' AND date_log = ?) AS total_late,
-
-            (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE remarks = 'MATERNITY LEAVE' AND date_log = ?) AS total_maternity,
-
-            (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE remarks = 'VACATION LEAVE' AND date_log = ?) AS total_vacation,
-
+s
             (SELECT COUNT(*) FROM hrmax.daily_attendance 
              WHERE remarks = 'SICK LEAVE' AND date_log = ?) AS total_sick,
 
             (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE remarks = 'BUSINESS TRAVEL' AND date_log = ?) AS total_business,
-
-            (SELECT COUNT(*) FROM hrmax.daily_attendance 
-             WHERE (remarks = 'SPL-HOLIDAY' OR remarks = 'LGL-HOLIDAY') AND date_log = ?) AS total_holiday";
+             WHERE remarks = 'BUSINESS TRAVEL' AND date_log = ?) AS total_business,";
 
         $sth = $DBConnection->prepare($sql);
         
