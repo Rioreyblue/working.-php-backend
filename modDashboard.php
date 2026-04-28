@@ -152,19 +152,19 @@ case "DASH06":
             echo $ex->getMessage();
         }
     break;
-
+//rey taks
     case"DASH07":
         try{
             $sql = "SELECT stat.idno,
                     stat.divcode,
                     CONCAT(pr.lname, ', ', pr.fname, ' ', pr.mname) AS full_name,
                     stat.remarks,
-                    TO_CHAR(stat.attdate, 'MM/DD/YYYY') AS formated_date,
+                    stat.attdate,
                     stat.trail
                     FROM hrmax.daily_attendance AS stat
                     INNER JOIN 
                     hrmax.profile AS pr ON stat.idno = pr.idno
-                    ORDER BY formated_date DESC";
+                    ORDER BY stat.attdate DESC";
             $sth = $DBConnection->prepare($sql);
             $sth->execute();
             $sth->setFetchMode(PDO::FETCH_ASSOC); 
