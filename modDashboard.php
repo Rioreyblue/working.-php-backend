@@ -120,38 +120,61 @@ switch ($MC) {
     break;
     //rey
 case "DASH06":
-        try {
-            $varDateNow = $objEntry->{'varDateNow'};
-            $sql = "SELECT 
-                (SELECT COUNT(*) FROM hrmax.daily_attendance 
-                 WHERE (remarks IS NULL OR remarks = 'null' OR remarks != 'ABSENT') 
-                 AND date_log = ?) AS total_present,
-                
-                (SELECT COUNT(*) FROM hrmax.daily_attendance_posted 
-                 WHERE remarks = 'LATE' AND date_log = ?) AS total_late,
-                
-                (SELECT COUNT(*) FROM hrmax.official_business_travel_online 
-                 WHERE date_start = ? AND deleted = FALSE) AS total_on_business,
-                
-                (SELECT COUNT(*) FROM hrmax.leave_benefits_online 
-                 WHERE ? BETWEEN date_from AND date_to AND deleted = FALSE) AS total_on_leave";
+    try {
+        $varDateNow = $objEntry->{'varDateNow'};
+        
+        $sql = "SELECT 
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE date_log = ?) AS total_base,
 
-            $sth = $DBConnection->prepare($sql);
-            $sth->bindValue(1, $varDateNow);
-            $sth->bindValue(2, $varDateNow);
-            $sth->bindValue(3, $varDateNow);
-            $sth->bindValue(4, $varDateNow);  
-            $sth->execute();
-            $sth->setFetchMode(PDO::FETCH_ASSOC); 
-            $rows = json_encode($sth->fetchAll());  
-            
-            if ($rows != '[]') {
-                echo $rows; 
-            }
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'ABSENT' AND date_log = ?) AS total_absent,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE (remarks = '' OR remarks = 'LATE' OR remarks = 'UNDERTIME') AND date_log = ?) AS total_present,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'LATE' AND date_log = ?) AS total_late,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'MATERNITY LEAVE' AND date_log = ?) AS total_maternity,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'VACATION LEAVE' AND date_log = ?) AS total_vacation,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'SICK LEAVE' AND date_log = ?) AS total_sick,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE remarks = 'BUSINESS TRAVEL' AND date_log = ?) AS total_business,
+
+            (SELECT COUNT(*) FROM hrmax.daily_attendance 
+             WHERE (remarks = 'SPL-HOLIDAY' OR remarks = 'LGL-HOLIDAY') AND date_log = ?) AS total_holiday";
+
+        $sth = $DBConnection->prepare($sql);
+        
+        $sth->bindValue(1, $varDateNow);
+        $sth->bindValue(2, $varDateNow);
+        $sth->bindValue(3, $varDateNow);
+        $sth->bindValue(4, $varDateNow);
+        $sth->bindValue(5, $varDateNow);
+        $sth->bindValue(6, $varDateNow);
+        $sth->bindValue(7, $varDateNow);
+        $sth->bindValue(8, $varDateNow);
+        $sth->bindValue(9, $varDateNow);
+
+        $sth->execute();
+        $sth->setFetchMode(PDO::FETCH_ASSOC); 
+        $rows = json_encode($sth->fetchAll());  
+        
+        if ($rows != '[]') {
+            echo $rows; 
         }
+    } catch (Exception $ex) {
+        echo $ex->getMessage();
+    }
     break;
+
 //rey taks
     case"DASH07":
         try{
