@@ -39,7 +39,7 @@ switch ($MC) {
         }
         break;
 
-    case "AMORT02": // insrt or update
+    case "AMORT02":
         try {
             $loan_id      = $objEntry->{'loan_id'};
             $loan_desc    = $objEntry->{'loan_desc'};
