@@ -64,7 +64,7 @@ switch ($MC) {
             $ceiling_config          = $objEntry->{'ceiling_config'};
             $user                    = $objEntry->{'user'};
             $trail                   = $user . "-" . $trailDate;
-            $IsUpdate                = $objEntry->{'IsUpdate'};
+            $IsUpdate           = $objEntry->{'IsUpdate'};
 
             $DBConnection->beginTransaction();
 
